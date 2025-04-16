@@ -44,10 +44,14 @@ export class DivisionService {
     return this.divisionRepository.save(division);
   }
 
-  findAll(): Promise<Division[]> {
-    return this.divisionRepository.find({
-      relations: ['upper_division', 'subdivisions'],
+  async findAll(): Promise<any[]> {
+    const divisions = await this.divisionRepository.find({
+      relations: ['subdivisions', 'upper_division'],
     });
+    return divisions.map((division) => ({
+      ...division,
+      subdivisionCount: division.subdivisions?.length || 0,
+    }));
   }
 
   async findOne(id: number): Promise<Division> {
