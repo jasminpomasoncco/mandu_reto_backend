@@ -23,7 +23,20 @@ async function bootstrap() {
     }),
   );
   const seeder = app.get(DivisionSeeder);
-  await seeder.seed(); // Ejecutamos el seeder
+  await seeder.seed();
+
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'Accept',
+    ],
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
